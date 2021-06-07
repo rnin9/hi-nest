@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { ppid } from 'process';
 
 @Controller('movies') // entrypoint 변경으로 routing 초기설정가능
@@ -8,8 +8,12 @@ export class MoviesController {
     getAll(): string {
         return 'hi movie'
     }
-    
-    @Get('/:id') // 이쪽 값과 @Param 값은 동일해야 한다.
+    @Get('search')
+    search(@Query("name") movieID){         // url resources 가져오기 = @Query
+        return `I'm searching ${movieID}`;
+    }
+
+    @Get(':id') // 이쪽 값과 @Param 값은 동일해야 한다.
     getOne(@Param('id') movieId: string): string{ 
         return `this is ${movieId}`;
     }
@@ -31,4 +35,6 @@ export class MoviesController {
          ...reqBody //스프레드 연산자.
         }     
     }
+
+   
 }
