@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { CreateMovieDto } from './entities/create-movie.dto';
 import { Movie } from './entities/movie.entity';
 import { MoviesService } from './movies.service';
 
@@ -15,22 +16,23 @@ export class MoviesController {
     }
 
     @Get(':id') // 이쪽 값과 @Param 값은 동일해야 한다.
-    getOne(@Param('id') movieID: string): Movie {
+    getOne(@Param('id') movieID: number): Movie {
+        console.log(typeof movieID);
         return this.MoviesService.getOne(movieID);
     }
 
     @Post()
-    create(@Body() reqBody) {
+    create(@Body() reqBody: CreateMovieDto) {
         return this.MoviesService.create(reqBody);
     }
 
     @Delete('/:id')
-    remove(@Param('id') movieID: string) {
+    remove(@Param('id') movieID: number) {
         return this.MoviesService.deleteOne(movieID);
     }
 
     @Patch(':/id')
-    updateOne(@Param('id') movieID: string, @Body() reqBody) {    // 값 가져올떄는 @Param @Body로 body 데이터 가져오기 가능.
+    updateOne(@Param('id') movieID: number, @Body() reqBody) {    // 값 가져올떄는 @Param @Body로 body 데이터 가져오기 가능.
         return {
             updateMovie: movieID,
             ...reqBody //스프레드 연산자.

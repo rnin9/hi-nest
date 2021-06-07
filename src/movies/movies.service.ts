@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CreateMovieDto } from './entities/create-movie.dto';
 import { Movie } from './entities/movie.entity';
 
 @Injectable()
@@ -9,16 +10,16 @@ export class MoviesService {
         return this.movies;
     }
 
-    getOne(id: string):Movie{
-        return this.movies.find(movie => movie.id === parseInt(id));
+    getOne(id: number):Movie{
+        return this.movies.find(movie => movie.id === id);
     }
 
-    deleteOne(id:string): boolean{
-        this.movies.filter(movie => movie.id !== parseInt(id))
+    deleteOne(id: number): boolean{
+        this.movies.filter(movie => movie.id !== id)
         return true;
     }
 
-    create(movieData){
+    create(movieData: CreateMovieDto){
         this.movies.push({
             id: this.movies.length+1,
             ...movieData
