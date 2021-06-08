@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMovieDto } from './entities/create-movie.dto';
 import { Movie } from './entities/movie.entity';
+import { UpdateMovieDto } from './entities/update.movie.dto';
 
 @Injectable()
 export class MoviesService {
@@ -15,14 +16,27 @@ export class MoviesService {
     }
 
     deleteOne(id: number): boolean{
-        this.movies.filter(movie => movie.id !== id)
+        this.movies = this.movies.filter(movie => movie.id !== id)
         return true;
     }
 
     create(movieData: CreateMovieDto){
-        this.movies.push({
-            id: this.movies.length+1,
-            ...movieData
-        })
+        const len = this.movies.length;
+        if (len === 0){
+            this.movies.push({
+                id: len+1,
+                ...movieData
+            })
+        } else{
+            this.movies.push({
+                id: this.movies[len-1].id+1,
+                ...movieData
+            })
+        }
+    }
+
+    update(id:number,movieData:UpdateMovieDto){
+        const movie = this.getOne(id);
+       this.movies.splice(id-1,1,{...movie, ...movieData})
     }
 }

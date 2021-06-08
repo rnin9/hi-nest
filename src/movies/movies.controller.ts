@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { CreateMovieDto } from './entities/create-movie.dto';
 import { Movie } from './entities/movie.entity';
+import { UpdateMovieDto } from './entities/update.movie.dto';
 import { MoviesService } from './movies.service';
 
 @Controller('movies') // entrypoint 변경으로 routing 초기설정가능
@@ -17,7 +18,6 @@ export class MoviesController {
 
     @Get(':id') // 이쪽 값과 @Param 값은 동일해야 한다.
     getOne(@Param('id') movieID: number): Movie {
-        console.log(typeof movieID);
         return this.MoviesService.getOne(movieID);
     }
 
@@ -31,12 +31,9 @@ export class MoviesController {
         return this.MoviesService.deleteOne(movieID);
     }
 
-    @Patch(':/id')
-    updateOne(@Param('id') movieID: number, @Body() reqBody) {    // 값 가져올떄는 @Param @Body로 body 데이터 가져오기 가능.
-        return {
-            updateMovie: movieID,
-            ...reqBody //스프레드 연산자.
-        }
+    @Patch('/:id')
+    updateOne(@Param('id') movieID: number, @Body() reqBody:UpdateMovieDto) {    // 값 가져올떄는 @Param @Body로 body 데이터 가져오기 가능.
+        return this.MoviesService.update(movieID,reqBody)
     }
 
 
